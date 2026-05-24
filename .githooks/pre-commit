@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+root="$(git rev-parse --show-toplevel)"
+src="$root/GCBQH1F/ra3QptH7UFk.src.js"
+out="$root/GCBQH1F/ra3QptH7UFk.js"
+minify="$root/scripts/minify-quiz.sh"
+
+if [[ ! -f "$src" ]]; then
+  exit 0
+fi
+
+should_minify=false
+
+if git diff --cached --name-only -- "$src" "$out" | grep -q .; then
+  should_minify=true
+elif [[ "$src" -nt "$out" ]]; then
+  should_minify=true
+fi
+
+if [[ "$should_minify" != true ]]; then
+  exit 0
+fi
+
+"$minify"
+git add "$out"
+
+if git diff --cached --quiet -- "$out"; then
+  :
+else
+  echo "pre-commit: updated GCBQH1F/ra3QptH7UFk.js from source"
+fi
