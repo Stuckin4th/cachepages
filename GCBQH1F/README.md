@@ -1,5 +1,9 @@
 This is a 3-stage multi.
 
+First stage URL: https://stuckin4th.github.io/cachepages/GCBQH1F/erwyb+Uqhdw.html
+
+Second stage URL: https://stuckin4th.github.io/cachepages/GCBQH1F/ra3QpTh7UFk.html
+
 Go to the published coordinates, scan the airtag there.
 
 That airtag will send you to a page with the coordinates to the second stage.
