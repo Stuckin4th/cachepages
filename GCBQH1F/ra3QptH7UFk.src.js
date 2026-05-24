@@ -7,9 +7,14 @@
   const subtitlePrompt = document.getElementById("subtitle-prompt");
   const subtitleComplete = document.getElementById("subtitle-complete");
   const inputs = document.querySelectorAll("#questions input");
+  const answerSpans = document.querySelectorAll("#quiz-answer-complete li span");
 
   function decoded(input) {
     return parseInt(input.value, 10) ^ 0xa5;
+  }
+
+  function decodedAnswer(encoded) {
+    return encoded ^ 0xa5;
   }
 
   function inputIndex(input) {
@@ -48,6 +53,11 @@
     coords.classList.toggle("hidden", !complete);
     subtitlePrompt.classList.toggle("hidden", complete);
     subtitleComplete.classList.toggle("hidden", !complete);
+    if (complete) {
+      answerSpans.forEach(function (span, index) {
+        span.textContent = String(decodedAnswer(expected[index]));
+      });
+    }
   }
 
   inputs.forEach(function (input) {
