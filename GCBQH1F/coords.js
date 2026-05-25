@@ -1,0 +1,1 @@
+!function(){function t(t){let e="";for(let n=0;n<t.length;n++)e+=String.fromCharCode(165^t.charCodeAt(n));return e}const e=document.getElementById("stage2-coords");e&&(e.textContent=t("ëò")),window.cacheRevealFinalCoords=function(e){e&&(e.textContent=t("ëò"))}}();

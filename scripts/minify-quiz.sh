@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
+# Deprecated: use minify-gcbqh1f.sh
 set -euo pipefail
-root="$(cd "$(dirname "$0")/.." && pwd)"
-npx --yes terser "$root/GCBQH1F/ra3QptH7UFk.src.js" \
-  -c -m \
-  -o "$root/GCBQH1F/ra3QptH7UFk.js"
+"$(cd "$(dirname "$0")" && pwd)/minify-gcbqh1f.sh"

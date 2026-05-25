@@ -2,31 +2,52 @@
 set -euo pipefail
 
 root="$(git rev-parse --show-toplevel)"
-src="$root/GCBQH1F/ra3QptH7UFk.src.js"
-out="$root/GCBQH1F/ra3QptH7UFk.js"
-minify="$root/scripts/minify-quiz.sh"
+minify="$root/scripts/minify-gcbqh1f.sh"
 
-if [[ ! -f "$src" ]]; then
-  exit 0
-fi
+pairs=(
+  "GCBQH1F/coords.src.js GCBQH1F/coords.js"
+  "GCBQH1F/ra3QptH7UFk.src.js GCBQH1F/ra3QptH7UFk.js"
+)
 
 should_minify=false
 
-if git diff --cached --name-only -- "$src" "$out" | grep -q .; then
-  should_minify=true
-elif [[ "$src" -nt "$out" ]]; then
-  should_minify=true
-fi
+for pair in "${pairs[@]}"; do
+  read -r src out <<<"$pair"
+  src="$root/$src"
+  out="$root/$out"
+
+  if [[ ! -f "$src" ]]; then
+    continue
+  fi
+
+  if git diff --cached --name-only -- "$src" "$out" | grep -q .; then
+    should_minify=true
+    break
+  elif [[ "$src" -nt "$out" ]]; then
+    should_minify=true
+    break
+  fi
+done
 
 if [[ "$should_minify" != true ]]; then
   exit 0
 fi
 
 "$minify"
-git add "$out"
 
-if git diff --cached --quiet -- "$out"; then
-  :
-else
-  echo "pre-commit: updated GCBQH1F/ra3QptH7UFk.js from source"
+updated=()
+for pair in "${pairs[@]}"; do
+  read -r src out <<<"$pair"
+  out="$root/$out"
+  if [[ -f "$out" ]]; then
+    git add "$out"
+    if ! git diff --cached --quiet -- "$out" 2>/dev/null; then
+      updated+=("$out")
+    fi
+  fi
+done
+
+if ((${#updated[@]} > 0)); then
+  echo "pre-commit: updated minified JS from source:"
+  printf '  %s\n' "${updated[@]}"
 fi
